@@ -27,32 +27,7 @@ function reducer(state, action) {
 
 const initState = {
     allMessage: [
-        {
-            from: 'user',
-            msg: 'hi',
-            topic: 'general'
-        }, {
-            from: 'user',
-            msg: 'hi',
-            topic: 'general'
-        }, {
-            from: 'user',
-            msg: 'hi',
-            topic: 'general'
-        },
-        {
-            from: 'user',
-            msg: 'hi',
-            topic: 'topic2'
-        }, {
-            from: 'user',
-            msg: 'hi',
-            topic: 'topic2'
-        }, {
-            from: 'user',
-            msg: 'hi',
-            topic: 'topic2'
-        }
+
     ],
     topic: ['general', 'topic2']
 };
