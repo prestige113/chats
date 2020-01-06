@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center'
     },
+    spaceAround: {
+        justifyContent: 'space-around'
+    },
     topicsWindow: {
         width: '30%',
         height: '300px',
@@ -40,19 +43,24 @@ export default function Dashboard() {
 
     const classes = useStyles();
 
-    const {allChats, sendChatAction, user} = React.useContext(CTX);
-    const topics = Object.keys(allChats);
+    const {data, sendChatAction} = React.useContext(CTX);
+    const topics = data.topic;
 
     //local state
     const [activeTopic, changeActiveTopic] = React.useState(topics[0]);
     const [textValue, changeTextValue] = React.useState('');
+    const [userName, changeUserNameValue] = React.useState('');
 
     return (
         <div>
             <Paper className={classes.root}>
-                <Typography variant="h4" component="h4">
-                    Chat app
-                </Typography>
+                <div className={classes.flex + " " + classes.spaceAround}>
+                    <Typography variant="h4" component="h4">
+                        Chat app
+                    </Typography>
+                    <TextField value={userName} placeholder="put your name"
+                               onChange={e => changeUserNameValue(e.target.value)}/>
+                </div>
                 <Typography variant="h5" component="h5">
                     {activeTopic}
                 </Typography>
@@ -71,7 +79,7 @@ export default function Dashboard() {
                     </div>
                     <div className={classes.chatWindow}>
                         {
-                            allChats[activeTopic].map((chat, index) => (
+                            data.allMessage.filter(f => f.topic === activeTopic).map((chat, index) => (
                                 <div className={classes.flex} key={index}>
                                     <Chip label={chat.from} className={classes.chip}/>
                                     <Typography variant="body1"> {chat.msg}</Typography>
@@ -88,11 +96,11 @@ export default function Dashboard() {
                         value={textValue}
                         onChange={e => changeTextValue(e.target.value)}
                     />
-                    <Button variant="contained" color="primary" onClick={() => {
-                        sendChatAction({from: user, msg: textValue, topic: activeTopic});
+                    <Button variant="contained" color="primary" disabled={!userName} onClick={() => {
+                        sendChatAction({from: userName, msg: textValue, topic: activeTopic});
                         changeTextValue('')
                     }}>
-                        Primary
+                        send
                     </Button>
                 </div>
             </Paper>

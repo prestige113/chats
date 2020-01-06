@@ -10,11 +10,12 @@ function reducer(state, action) {
         case 'RECIEVE_MESSAGE':
             return {
                 ...state,
-                [topic]: [
-                    ...state[topic],
+                allMessage: [
+                    ...state.allMessage,
                     {
                         from,
-                        msg
+                        msg,
+                        topic,
                     }
                 ]
             };
@@ -25,8 +26,7 @@ function reducer(state, action) {
 }
 
 const initState = {
-
-    general: [
+    allMessage: [
         {
             from: 'user',
             msg: 'hi',
@@ -39,23 +39,22 @@ const initState = {
             from: 'user',
             msg: 'hi',
             topic: 'general'
+        },
+        {
+            from: 'user',
+            msg: 'hi',
+            topic: 'topic2'
+        }, {
+            from: 'user',
+            msg: 'hi',
+            topic: 'topic2'
+        }, {
+            from: 'user',
+            msg: 'hi',
+            topic: 'topic2'
         }
     ],
-    topic2: [
-        {
-            from: 'user',
-            msg: 'hi',
-            topic: 'general'
-        }, {
-            from: 'user',
-            msg: 'hi',
-            topic: 'general'
-        }, {
-            from: 'user',
-            msg: 'hi',
-            topic: 'general'
-        }
-    ]
+    topic: ['general', 'topic2']
 };
 let socket;
 
@@ -65,7 +64,7 @@ function sendChatAction(value) {
 
 export default function Store(props) {
 
-    const [allChats, dispatch] = React.useReducer(reducer, initState);
+    const [data, dispatch] = React.useReducer(reducer, initState);
 
     if (!socket) {
         socket = io(":3001");
@@ -74,9 +73,9 @@ export default function Store(props) {
         })
     }
 
-    const user = 'Aldar' + Math.random(100).toFixed(2)
+    const user = 'Aldar' + Math.random(100).toFixed(2);
     return (
-        <CTX.Provider value={{allChats, sendChatAction, user}}>
+        <CTX.Provider value={{data, sendChatAction, user}}>
             {props.children}
         </CTX.Provider>
     )
